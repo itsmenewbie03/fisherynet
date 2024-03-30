@@ -1,4 +1,4 @@
 @extends("dashboard")
-@section("brand")
+@section("content")
 Reports
 @endsection
