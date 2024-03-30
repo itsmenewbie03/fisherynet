@@ -2,10 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,6 +17,13 @@ return new class() extends Migration
             $table->text('value');
             $table->timestamps();
         });
+
+        DB::table('configurations')->insert([
+            'key' => 'min_fish_size',
+            'value' => '69',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**
