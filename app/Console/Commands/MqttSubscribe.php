@@ -37,6 +37,10 @@ class MqttSubscribe extends Command
             };
             Log::info(sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message));
         }, 0);
+        // TODO: add a subscriber for FISHERYNET|CONFIG_REQUEST
+        // insert the info to the database
+        // use QOS 2 for better recording as this is a crucial part of the system
+        // THINK ABOUT A WAY TO TRANSMIT THE DATA
         $mqtt->loop(true, true);
     }
 

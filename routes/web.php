@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use PhpMqtt\Client\Facades\MQTT;
 
 Route::get('/', function () {
@@ -12,8 +13,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $deeznuts = session("deeznuts");
-    return view('dashboard', $deeznuts ? ["deeznuts" => $deeznuts] : []);
+    $est_size = session("est_size");
+    return view('dashboard', $est_size ? ["est_size" => $est_size] : []);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -53,9 +54,19 @@ Route::middleware('auth')->group(function () {
 
         $mqtt->loop(true, true);
         Log::info("Estimated size we will return to dashboard: $est_size");
-        return redirect()->route('dashboard')->with('deeznuts', $est_size);
+        return redirect()->route('dashboard')->with('est_size', $est_size);
 
     })->name('calibrate');
+
+    Route::post("/toggle", function (Request $request) {
+        $port = $request->input('port');
+        $mqtt = MQTT::connection();
+        Log::info("TOGGLING $port");
+        $mqtt->publish('FISHERYNET|TOGGLE_PORT', $port, 0, false);
+        $mqtt->loop(true, true);
+        // TODO: add a message about the toggle result
+        return redirect()->route('dashboard');
+    })->name('toggle');
 
 });
 
