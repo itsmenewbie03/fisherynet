@@ -19,6 +19,13 @@
     <link href={{asset("css/sb-admin-2.min.css")}} rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css">
 
+    <!-- Date picker css -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <!-- Switch css -->
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="bootstrap-switch.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -319,23 +326,33 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src={{asset("vendor/jquery/jquery.min.js")}}></script>
-    <script src={{asset("vendor/bootstrap/js/bootstrap.bundle.min.js")}}></script>
+<!-- Bootstrap core JavaScript -->
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src={{asset("vendor/jquery-easing/jquery.easing.min.js")}}></script>
+<!-- Core plugin JavaScript -->
+<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src={{asset("js/sb-admin-2.min.js" )}}></script>
+<!-- Custom scripts for all pages -->
+<script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 
-    <!-- Page level plugins -->
-    <script src={{asset("vendor/chart.js/Chart.min.js")}}></script>
+<!-- Page level plugins -->
+<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 
-    <!-- Page level custom scripts -->
-    <script src={{asset("js/demo/chart-area-demo.js" )}}></script>
-    <script src={{asset("js/demo/chart-pie-demo.js" )}}></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+<!-- Page level custom scripts -->
+<script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
+<script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+<script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+
+    <!-- Date picker script -->
+    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+    <!-- Switch script -->
+    <script src="jquery.js"></script>
+<script src="bootstrap-switch.js"></script>
     @stack("scripts")
 </body>
 
