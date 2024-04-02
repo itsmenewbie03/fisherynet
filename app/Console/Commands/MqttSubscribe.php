@@ -30,6 +30,7 @@ class MqttSubscribe extends Command
     public function handle(): void
     {
         $mqtt = MQTT::connection();
+
         $mqtt->subscribe('FISHERYNET|CONFIG_REQUEST', function (string $topic, string $message) use ($mqtt) {
             match ($message) {
                 'min_fish_size' => $this->handle_min_fish_size($message),
@@ -37,10 +38,22 @@ class MqttSubscribe extends Command
             };
             Log::info(sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message));
         }, 0);
-        // TODO: add a subscriber for FISHERYNET|CONFIG_REQUEST
-        // insert the info to the database
-        // use QOS 2 for better recording as this is a crucial part of the system
-        // THINK ABOUT A WAY TO TRANSMIT THE DATA
+
+        $mqtt->subscribe('FISHERYNET|REPORTS', function (string $topic, string $message) use ($mqtt) {
+            Log::info(sprintf('Received QoS level 2 message on topic [%s]: %s', $topic, $message));
+            // INFO: format would be est_size=x.x
+            list($key, $value) = explode("=", $message);
+            if($key !== "est_size") {
+                Log::info("Invalid key: $key");
+                return;
+            }
+            DB::table('reports')->insert([
+                'est_size' => $value,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }, 2);
+
         $mqtt->loop(true, true);
     }
 
@@ -53,6 +66,6 @@ class MqttSubscribe extends Command
         $fish_size = $fish_size->value("value");
         Log::info("Publishing min_fish_size: $fish_size to FISHERYNET|CONFIG_RESPONSE");
         $mqtt->publish('FISHERYNET|CONFIG_RESPONSE', "min_fish_size=$fish_size", 0, false);
-        $mqtt->loop(true, true);
+        Log::info("Published min_fish_size: $fish_size to FISHERYNET|CONFIG_RESPONSE");
     }
 }
