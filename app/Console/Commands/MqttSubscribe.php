@@ -31,12 +31,8 @@ class MqttSubscribe extends Command
     {
         $mqtt = MQTT::connection();
 
-        $mqtt->subscribe('FISHERYNET|CONFIG_REQUEST', function (string $topic, string $message) use ($mqtt) {
-            match ($message) {
-                'min_fish_size' => $this->handle_min_fish_size($message),
-                default => Log::info(sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message))
-            };
-            Log::info(sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message));
+        $mqtt->subscribe('FISHERYNET|CONFIG_REQUEST', function (string $topic, string $message) {
+            $this->handle_configuration($message);
         }, 0);
 
         $mqtt->subscribe('FISHERYNET|REPORTS', function (string $topic, string $message) use ($mqtt) {
@@ -57,15 +53,31 @@ class MqttSubscribe extends Command
         $mqtt->loop(true, true);
     }
 
-    public function handle_min_fish_size(string $message): void
+    // NOTE: idk about the penalties of multiple calls to MQTT::connection()
+    // but we don't have time to deal with it right now xD
+    public function handle_configuration(string $message): void
     {
         $mqtt = MQTT::connection();
-        $fish_size = DB::table('configurations')
-            ->where('key', $message)
-            ->get();
-        $fish_size = $fish_size->value("value");
-        Log::info("Publishing min_fish_size: $fish_size to FISHERYNET|CONFIG_RESPONSE");
-        $mqtt->publish('FISHERYNET|CONFIG_RESPONSE', "min_fish_size=$fish_size", 0, false);
-        Log::info("Published min_fish_size: $fish_size to FISHERYNET|CONFIG_RESPONSE");
+
+        $configValue = $this->getConfigurationValue($message);
+
+        if ($configValue !== null) {
+            $topic = "FISHERYNET|CONFIG_RESPONSE";
+            $message = "$message=$configValue";
+            Log::info("Publishing $message to $topic");
+            $mqtt->publish($topic, $message, 0, false);
+            Log::info("Published $message to $topic");
+        } else {
+            Log::info("Configuration key $message not found in database");
+        }
+    }
+
+    private function getConfigurationValue(string $key): ?string
+    {
+        $result = DB::table('configurations')
+            ->where('key', $key)
+            ->value('value');
+
+        return $result !== null ? $result : null;
     }
 }
