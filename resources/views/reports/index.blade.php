@@ -5,16 +5,14 @@
     @csrf
     <div class="card">
         <div class="card-body">
-            <div class="input-group">
                 <input id="reportrangefilter" type="hidden" name="reportrangefilter" value=""/>
-                <small class="text-muted input-group-prepend" id="dateLabel">Report</small>
+                <small class="text-muted input-group-prepend mb-1" id="dateLabel">Generate Report</small>
                 <div id="reportrange" class="form-control" style="cursor: pointer;">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
                 </div>
-            </div>
             <div class="mt-3">
-                <button type="submit" class="btn btn-success btn-block">Submit</button>
+                <button type="submit" class="btn btn-success btn-block">Generate</button>
             </div>
         </div>
     </div>

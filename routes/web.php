@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Generator;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use PhpMqtt\Client\Facades\MQTT;
@@ -68,10 +68,8 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('dashboard');
     })->name('toggle');
 
-    Route::post("/generator", function (Request $request) {
-        $reportrangefilter = $request->input('reportrangefilter');
-        dd($reportrangefilter);
-    })->name('generator');
+    // NOTE: call the generate function of the Generator controller
+    Route::post("/generator", [Generator::class,'generate'])->name('generator');
 
 });
 
