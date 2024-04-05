@@ -1,20 +1,24 @@
 @extends("dashboard")
 
 @section("content")
-            <div class="card">
-                <div class="card-body">
-                    <div class="input-group">
-                        <small class="text-muted input-group-prepend" id="dateLabel">Report</small>
-                        <div id="reportrange" class="form-control w-100" style="cursor: pointer;">
-                            <i class="fa fa-calendar"></i>&nbsp;
-                            <span></span> <i class="fa fa-caret-down"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button class="btn btn-success btn-block">Submit</button>
-                    </div>
+<form method="POST" action="{{ route('generator') }}">
+    @csrf
+    <div class="card">
+        <div class="card-body">
+            <div class="input-group">
+                <input id="reportrangefilter" type="hidden" name="reportrangefilter" value=""/>
+                <small class="text-muted input-group-prepend" id="dateLabel">Report</small>
+                <div id="reportrange" class="form-control" style="cursor: pointer;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
                 </div>
             </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success btn-block">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
 @endsection
 
 @push("scripts")
@@ -24,6 +28,7 @@
         var end = moment();
 
         function cb(start, end) {
+            $('#reportrangefilter').val(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
 
