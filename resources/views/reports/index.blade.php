@@ -1,29 +1,33 @@
 @extends("dashboard")
 
 @section("content")
-<div class="container-fluid mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <small class="text-muted" id="dateLabel">Default Dates</small>
-            <div id="reportrange" class="form-control" style="cursor: pointer;">
-                <i class="fa fa-calendar"></i>&nbsp;
-                <span></span> <i class="fa fa-caret-down"></i>
+<form method="POST" action="{{ route('generator') }}">
+    @csrf
+    <div class="container-fluid mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <input id="reportrangefilter" type="hidden" name="reportrangefilter" value=""/>
+                <small class="text-muted" id="dateLabel">Default Dates</small>
+                <div id="reportrange" class="form-control" style="cursor: pointer;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6 mt-3 mt-md-0">
-            <small class="text-muted" id="dateLabel">Default Dates</small>
-            <div class="input-group">
-                <input type="text" id="daterange" class="form-control" name="daterange" value="01/01/2018 - 01/15/2018" />
-                <button class="btn btn-outline-secondary" type="button" id="daterangeBtn">
-                    <i class="fas fa-calendar-alt"></i>
-                </button>
+            <div class="col-md-6 mt-3 mt-md-0">
+                <small class="text-muted" id="dateLabel">Default Dates</small>
+                <div class="input-group">
+                    <input type="text" id="daterange" class="form-control" name="daterange" value="01/01/2018 - 01/15/2018" />
+                    <button class="btn btn-outline-secondary" type="button" id="daterangeBtn">
+                        <i class="fas fa-calendar-alt"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="col-md-12 mt-3">
-            <button class="btn btn-success btn-block">Submit</button>
+            <div class="col-md-12 mt-3">
+                <button type="submit" class="btn btn-success btn-block">Submit</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 @endsection
 
 @push("scripts")
@@ -42,6 +46,7 @@
         var end = moment();
 
         function cb(start, end) {
+            $('#reportrangefilter').val(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
 

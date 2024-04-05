@@ -68,6 +68,11 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('dashboard');
     })->name('toggle');
 
+    Route::post("/generator", function (Request $request) {
+        $reportrangefilter = $request->input('reportrangefilter');
+        dd($reportrangefilter);
+    })->name('generator');
+
 });
 
 require __DIR__ . '/auth.php';
