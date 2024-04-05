@@ -6,64 +6,65 @@
     <h2 class="text-center">Configure Settings</h2>
   </div>
 
-  <div class="mb-4">
-    <div class="custom-control custom-switch">
-      <label class="custom-control-label" for="enableautoupdate">On/Off</label>
-      <input type="checkbox" class="custom-control-input" id="enableautoupdate">
-    </div>
-  </div>
-
-  <div class="mb-4">
-    <div class="form-floating">
-      <label for="daterange">Date Range</label>
-      <br>
-            <small class="text-muted" id="dateLabel">Date</small>
-      <input type="text" class="form-control" id="daterange" name="daterange" value="01/01/2018 - 01/15/2018" />
-            <small class="text-muted" id="dateLabel">Time</small>
-      <input type="text" class="form-control" name="datetimes" />    
-    </div>
-  </div>
-
-  <div class="mb-4">
-    <div class="form-floating">
-      <label for="size">Area Size</label>
-      <input type="number" class="form-control" id="size" placeholder=" " />
-    </div>
-  </div>
-
-  <div class="mb-4">
-    <div class="form-floating">
-      <label for="cf">Calibration Factor</label>
-      <input type="number" class="form-control" id="cf" placeholder=" " />
-    </div>
-  </div>
-
-  <div class="mb-4">
-    <button class="btn btn-success btn-block">Submit</button>
-  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>On/Off</td>
+        <td>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="enableautoupdate">
+            <label class="custom-control-label" for="enableautoupdate"></label>
+          </div>
+          <button class="btn btn-primary">Toggle</button> <!-- Button for the switch -->
+        </td>
+      </tr>
+      <tr>
+        <td>Date Range</td>
+        <td>
+          <div class="form-floating">
+            <input type="text" class="form-control" name="datetimes" />
+            <label for="datetimes">Time</label>
+          </div>
+          <button class="btn btn-primary">Select Date</button> <!-- Button for date range -->
+        </td>
+      </tr>
+      <tr>
+        <td>Area Size</td>
+        <td>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="size" />
+            <label for="size">Area Size</label>
+          </div>
+          <button class="btn btn-primary">Update Size</button> <!-- Button for area size -->
+        </td>
+      </tr>
+      <tr>
+        <td>Calibration Factor</td>
+        <td>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="cf" />
+            <label for="cf">Calibration Factor</label>
+          </div>
+          <button class="btn btn-primary">Calibrate</button> <!-- Button for calibration factor -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
 @endsection
 
 @push("scripts")
 <script>
-    $(function() {
-        $('#daterange').daterangepicker({
-            opens: 'left'
-        }, function(start, end, label) {
-            console.log("a new date selection was made: " + start.format('yyyy-mm-dd') + ' to ' + end.format('yyyy-mm-dd'));
-        });
+  $(function() {
+    $('input[name="datetimes"]').daterangepicker({
+      timePicker: true,
+      startDate: moment().startOf('hour'),
+      endDate: moment().startOf('hour').add(32, 'hour'),
+      locale: {
+        format: 'M/DD hh:mm A'
+      }
     });
-
-$(function() {
-  $('input[name="datetimes"]').daterangepicker({
-    timePicker: true,
-    startDate: moment().startOf('hour'),
-    endDate: moment().startOf('hour').add(32, 'hour'),
-    locale: {
-      format: 'M/DD hh:mm A'
-    }
   });
-});
 </script>
 @endpush
