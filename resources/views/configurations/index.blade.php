@@ -56,7 +56,8 @@
             <td>Calibration Factor</td>
             <td>
               <div class="form-floating">
-                <input type="text" inputmode="decimal" class="form-control" id="cf" name="calibration_factor" min="1" pattern="[0-9]*[.,]?[0-9]*"/>
+                <input type="text" inputmode="decimal" class="form-control" id="cf" name="calibration_factor"
+                  min="1" pattern="[0-9]*[.,]?[0-9]*" />
               </div>
               <button class="btn btn-primary btn-block mt-1" name="action_id"
                 value="update_calibration_factor">Save</button> <!-- Button for area size -->
